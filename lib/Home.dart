@@ -5,7 +5,6 @@ import 'package:youtube/telas/Inscricao.dart';
 import 'package:youtube/telas/Biblioteca.dart';
 import 'package:http/http.dart' as http;
 
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -14,69 +13,57 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _indiceAtual = 0;
 
   @override
   Widget build(BuildContext context) {
-
-    List <Widget> _telas = [
+    List<Widget> _telas = [
       Inicio(),
       EmAlta(),
       Inscricao(),
       Biblioteca(),
-
     ];
-
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.grey,
-          opacity: 0.8
-        ),
+        iconTheme: IconThemeData(color: Colors.grey, opacity: 0.8),
         backgroundColor: Colors.white,
         title: Image.asset(
-            "imagens/youtube.png",
+          "imagens/youtube.png",
           width: 100,
           height: 50,
         ),
         titleTextStyle: TextStyle(
           fontSize: 20,
           color: Colors.red,
-          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.videocam),
-            onPressed: (){
-                print("ação: videocam");
-              },
-
+            onPressed: () {
+              print("ação: videocam");
+            },
           ),
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: (){
-                print("ação: Pesquisa");
-              },
-
+            onPressed: () {
+              print("ação: Pesquisa");
+            },
           ),
           IconButton(
             icon: Icon(Icons.account_circle),
-            onPressed: (){
-                print("ação: Conta");
-              },
-
+            onPressed: () {
+              print("ação: Conta");
+            },
           ),
-
         ],
-
       ),
       body: Container(
         padding: EdgeInsets.all(16),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
-        onTap:  (indice){
+        onTap: (indice) {
           setState(() {
             _indiceAtual = indice;
           });
