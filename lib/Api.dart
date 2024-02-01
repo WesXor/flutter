@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-
 import 'model/Video.dart';
+
 const CHAVE_YOUTUBE_API = "AIzaSyDu0FMYdi-pLPbViAAQI_HZLiFIRLHm4Dg";
 const ID_CANAL = "UCVHFbqXqoYvEWM1Ddxl0QDg";
 const URL_BASE = "https://www.googleapis.com/youtube/v3/";
@@ -11,12 +11,13 @@ class Api {
   Future<List<Video>> pesquisar(String pesquisa) async {
     try {
       http.Response response = await http.get(Uri.parse(
-          URL_BASE + "search" + "?"
-              "part=snippet"
-              "&type=video"
-              "&maxResults=20"
-              "&order=date"
-              "&key=$CHAVE_YOUTUBE_API"
+          URL_BASE + "search" +
+              "?part=snippet" +
+              "&type=video" +
+              "&maxResults=20" +
+              "&order=date" +
+              "&key=$CHAVE_YOUTUBE_API" +
+              "&channelId=$ID_CANAL" +
               "&q=$pesquisa"
       ));
 
@@ -28,17 +29,17 @@ class Api {
         // print("Resultado Title: " + dadosJson["items"][0]["snippet"]["title"].toString());
 
         List<Video> videos = dadosJson["items"].map<Video>(
-                (map) {
+            (map) {
               return Video.fromJson(map);
               // return Video.converterJson(map);
             }
         ).toList();
 
-        return videos;
-        // for (var video in videos){
-        //   print("Resultado Lista de Videos: "+ video.titulo!);
-        // }
+        for (var video in videos){
+          print("Resultado Lista de Videos: "+ video.titulo!);
+        }
         // print("Resultado Lista: " + videos.toString());
+        return videos;
 
         // for(var video in dadosJson["items"]) {
         //   print("Resultado video: " + video.toString());
@@ -46,7 +47,7 @@ class Api {
         // }
         // print("Resultado List: " + dadosJson["items"].toString());
       } else {
-        throw Exception("Erro ao buscar  os vídeos");
+        throw Exception("Erro ao buscar  os vídeos" );
       }
     } catch (e) {
       throw Exception("Erro ao buscar  os vídeos: $e");
