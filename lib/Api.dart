@@ -35,9 +35,9 @@ class Api {
             }
         ).toList();
 
-        for (var video in videos){
-          print("Resultado Lista de Videos: "+ video.titulo!);
-        }
+        // for (var video in videos){
+        //   print("Resultado Lista de Videos: "+ video.titulo!);
+        // }
         // print("Resultado Lista: " + videos.toString());
         return videos;
 

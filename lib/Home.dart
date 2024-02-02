@@ -5,6 +5,8 @@ import 'package:youtube/telas/Inscricao.dart';
 import 'package:youtube/telas/Biblioteca.dart';
 import 'package:http/http.dart' as http;
 
+import 'CustonSearchDelegate.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -14,11 +16,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _indiceAtual = 0;
+  String _resultado = "";
 
   @override
   Widget build(BuildContext context) {
+
+
     List<Widget> _telas = [
-      Inicio(),
+      Inicio(_resultado),
       EmAlta(),
       Inscricao(),
       Biblioteca(),
@@ -39,27 +44,39 @@ class _HomeState extends State<Home> {
         ),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              String? res = await showSearch(context: context, delegate: CustonSearchDelegate());
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  _resultado = res!;
+                });
+                print("Resultado digitado dentro do Home.dart: " + res!);
+                print("ação: Pesquisa");
+              });
+            },
+          ),
+
+
+          /*
+          IconButton(
             icon: Icon(Icons.videocam),
             onPressed: () {
               print("ação: videocam");
             },
           ),
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print("ação: Pesquisa");
-            },
-          ),
+
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
               print("ação: Conta");
             },
-          ),
+          ), */
         ],
       ),
       body: Container(
         padding: EdgeInsets.all(16),
+        child: _telas[_indiceAtual],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,

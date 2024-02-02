@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:youtube/Api.dart';
-
 import '../model/Video.dart';
 
 
 class Inicio extends StatefulWidget {
-  const Inicio({super.key});
+  // const Inicio({super.key});
+
+  String pesquisa;
+
+  Inicio( this.pesquisa);
 
   @override
   State<Inicio> createState() => _InicioState();
@@ -13,19 +16,19 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
 
-  _listaVideos(){
+  _listaVideos(String pesquisa){
     // Future<List<Video>> videos;
     Api api = Api();
     // videos = api.pesquisar("");
     // return videos;
-    return api.pesquisar("");
+    return api.pesquisar( pesquisa );
   }
   @override
   Widget build(BuildContext context) {
 
-    
+
     return  FutureBuilder<List<Video>>(
-        future: _listaVideos(),
+        future: _listaVideos(widget.pesquisa),
         builder: (context, snapshot){
           switch(snapshot.connectionState) {
             case ConnectionState.none :
@@ -39,21 +42,37 @@ class _InicioState extends State<Inicio> {
               if (snapshot.hasData) {
                 return ListView.separated(
                     itemBuilder: (context, index){
+                      List<Video>? videos = snapshot.data;
+                      Video video = videos![index];
                       return Column(
                         children: [
-                          Text("Testes  wwww    dsfsdfdsfsfsdf" + index.toString()),
+                          Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: video.imagem != null ? NetworkImage(video.imagem!) : NetworkImage(video.imagem!),
+
+                              )
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(video.titulo ?? "Titulo padrão"),
+                            subtitle: Text(video.canal ?? "Descricao Padrão"),
+                          ),
+                          // Text("Testes " + index.toString()),
                         ],
                       );
                     },
                     separatorBuilder: (context, index) => Divider(
                       height: 3,
-                      color: Colors.red,
+                      color: Colors.grey,
                     ),
                     itemCount: snapshot.data != null ? snapshot.data!.length : 0,
                 );
               } else {
                 return Center(
-                  child: Text("Nenhum dado a ser exibido!!!"),
+                  child: Text("Nenhum dado a ser exibido!"),
                 );
               }
               break;
